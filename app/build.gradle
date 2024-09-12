@@ -3,14 +3,23 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
 }
 
+def properties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withInputStream { stream ->
+        properties.load(stream)
+    }
+}
+
 android {
     namespace 'com.ite.sws'
-    compileSdk 31
+    compileSdk 34
 
     defaultConfig {
+        buildConfigField "String", "BASE_URL", "\"${properties['BASE_URL']}\""
         applicationId "com.ite.sws"
         minSdk 26
-        targetSdk 31
+        targetSdk 34
         versionCode 1
         versionName "1.0"
         vectorDrawables {
@@ -33,7 +42,8 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures {
-        compose true
+        viewBinding true
+        buildConfig true
     }
     composeOptions {
         kotlinCompilerExtensionVersion '1.5.1'
@@ -42,6 +52,9 @@ android {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
+    }
+    viewBinding {
+        enabled = true
     }
 }
 
@@ -55,8 +68,29 @@ dependencies {
     implementation libs.compose.foundation
     implementation libs.activity.compose
     implementation libs.core.splashscreen
+    implementation libs.appcompat
     androidTestImplementation platform(libs.compose.bom)
     androidTestImplementation libs.ui.test.junit4
     debugImplementation libs.ui.tooling
     debugImplementation libs.ui.test.manifest
+
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+
+    // watch
+    implementation 'com.google.android.gms:play-services-wearable:18.0.0'
+
+    // okhttp3
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+
+    // retrofit
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+
+    // gson
+    implementation 'com.google.code.gson:gson:2.9.0'
+
+    // activity & fragment
+    implementation "androidx.activity:activity-ktx:1.4.0"
+    implementation "androidx.fragment:fragment-ktx:1.4.1"
 }
