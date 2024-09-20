@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">watch</string>
+    <string name="app_name">쉘위스캔</string>
     <string name="hello_world">From the Square world,\nHello, %1$s!</string>
     <string name="parking_btn">주차정산하기</string>
 </resources>
